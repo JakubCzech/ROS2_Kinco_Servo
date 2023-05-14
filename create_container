@@ -1,0 +1,11 @@
+#!/bin/bash
+xhost +
+docker run -it --rm --name=kinco_driver \
+--ulimit memlock=-1 \
+--privileged \
+--device=/dev/:/dev/ \
+--env="DISPLAY=$DISPLAY" \
+--network=host \
+test:latest bash
+
+# -v $(pwd)/src_files/src:/root/workspace/src:rw \ add this for edit     
