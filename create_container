@@ -3,9 +3,10 @@ xhost +
 docker run -it --rm --name=kinco_driver \
 --ulimit memlock=-1 \
 --privileged \
---device=/dev/:/dev/ \
+--device=/dev/:/dev/:rw \
+--device=/dev/ttyUSB0:/dev/ttyUSB0:rw \
 --env="DISPLAY=$DISPLAY" \
+--volume $(pwd)/src_files/src:/root/workspace/src:rw \
 --network=host \
 test:latest bash
 
-# -v $(pwd)/src_files/src:/root/workspace/src:rw \ add this for edit     
