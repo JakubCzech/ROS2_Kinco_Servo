@@ -8,5 +8,4 @@ docker run -it --rm --name=kinco_driver \
 --env="DISPLAY=$DISPLAY" \
 --volume $(pwd)/src_files/src:/root/workspace/src:rw \
 --network=host \
-test:latest bash
-
+kinco_driver:latest bash

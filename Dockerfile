@@ -10,9 +10,10 @@ RUN ./ros_entrypoint.sh
 RUN apt-get update && apt-get upgrade -y && apt-get autoremove -y
 
 RUN apt-get update && apt-get install -y \
-    python3-pip 
+    python3-pip
 RUN pip3 install -U \
-    pyserial 
+    pyserial \
+    pyserial-asyncio
 #     python3-colcon-common-extensions
 RUN mkdir -p /root/workspace/src
 WORKDIR /root/workspace
