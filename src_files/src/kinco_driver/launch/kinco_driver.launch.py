@@ -7,7 +7,7 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    port = LaunchConfiguration('port', default='/dev/ttyUSB0')
+    port = LaunchConfiguration('port', default='')
     baudrate = LaunchConfiguration('baudrate', default=115200)
     target_high_topic = LaunchConfiguration(
         'target_high_topic', default='target_high',

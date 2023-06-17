@@ -14,7 +14,7 @@ class KincoDriver(Node):
         self.declare_parameters(
             namespace='',
             parameters=[
-                ('port', '/dev/ttyUSB0'),
+                ('port', ''),
                 ('baudrate', 115200),
                 ('target_high_topic', 'target_high'),
                 ('state_topic', 'state'),
@@ -24,7 +24,6 @@ class KincoDriver(Node):
         port = self.get_parameter('port').value
         baudrate = self.get_parameter('baudrate').value
         self._publish_frequency = 1.0 / self.get_parameter('frequency').value
-
         self._target_high = self.create_subscription(
             Int64,
             self.get_parameter(

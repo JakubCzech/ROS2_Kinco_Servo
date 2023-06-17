@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import glob
+import os
 import threading
 import time
 from datetime import datetime
@@ -24,13 +26,7 @@ class ServoDriver:
         dev: str,
         baudrate: int,
     ) -> None:
-        self.connect = Serial(
-            dev,
-            baudrate,
-            timeout=0.08,
-            write_timeout=0.08,
-            exclusive=True,
-        )
+        self._get_connection(port=dev, baudrate=baudrate)
         self.telegram = RS232Telegram(id=1)
         self.logger = get_logger(self.__class__.__name__)
         self._last_write_time = time.time()
@@ -45,6 +41,39 @@ class ServoDriver:
         self._end_of_homing = threading.Event()
         self._during_moving = threading.Event()
         self._end_of_moving = threading.Event()
+
+    def _get_connection(self, port: str, baudrate: int) -> None:
+        if port != '':
+            self.connect = Serial(
+                port,
+                baudrate,
+                timeout=0.08,
+                write_timeout=0.08,
+                exclusive=True,
+            )
+        elif os.getenv('SERVO_PORT') is not None:
+            self.connect = Serial(
+                os.getenv('SERVO_PORT'),
+                baudrate,
+                timeout=0.08,
+                write_timeout=0.08,
+                exclusive=True,
+            )
+        else:
+            if glob.glob('/dev/ttyUSB*'):
+                for port in glob.glob('/dev/ttyUSB*'):
+                    try:
+                        self.connect = Serial(
+                            port,
+                            baudrate,
+                            timeout=0.08,
+                            write_timeout=0.08,
+                            exclusive=True,
+                        )
+                    except SerialException:
+                        self.logger.error(f'Connection error on port {port}')
+            else:
+                raise ValueError('Port is not set')
 
     def init_servo_params(self):
         for field in ServoDB.get():
