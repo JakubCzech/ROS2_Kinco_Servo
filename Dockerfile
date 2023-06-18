@@ -30,14 +30,3 @@ COPY ./scripts/* .
 COPY ./src_files/src ./src
 RUN . /opt/ros/$ROS_DISTRO/setup.bash && colcon build --symlink-install
 ENTRYPOINT [ "/root/workspace/entrypoint.sh" ]
-
-
-
-
-
-
-
-RUN mkdir -p /root/workspace/src
-WORKDIR /root/workspace
-COPY ./src_files/src ./src
-RUN colcon build --symlink-install --packages-select kinco_driver
