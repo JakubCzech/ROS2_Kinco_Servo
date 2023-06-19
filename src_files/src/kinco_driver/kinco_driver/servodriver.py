@@ -52,13 +52,14 @@ class ServoDriver:
                 exclusive=True,
             )
         elif os.getenv('SERVO_PORT') is not None:
-            self.connect = Serial(
-                os.getenv('SERVO_PORT'),
-                baudrate,
-                timeout=0.08,
-                write_timeout=0.08,
-                exclusive=True,
-            )
+            if os.getenv('SERVO_PORT') !=''
+                self.connect = Serial(
+                    os.getenv('SERVO_PORT'),
+                    baudrate,
+                    timeout=0.08,
+                    write_timeout=0.08,
+                    exclusive=True,
+                )
         else:
             if glob.glob('/dev/ttyUSB*'):
                 for port in glob.glob('/dev/ttyUSB*'):
