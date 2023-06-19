@@ -25,14 +25,14 @@ class ServoDB:
     TARGET_SPEED = Field(
         bytearray([0xFF, 0x60, 0x00]),
         FOUR_BYTE,
-        calc_speed(500),
+        calc_speed(1000),
     )
     TARGET_TORQUE = Field(bytearray([0x71, 0x60, 0x00]), TWO_BYTE, 0)
 
     PROFILE_SPEED = Field(
         bytearray([0x81, 0x60, 0x00]),
         FOUR_BYTE,
-        calc_speed(250),
+        calc_speed(1500),
     )
     MAX_SPEED = Field(
         bytearray([0x80, 0x60, 0x00]),
@@ -55,13 +55,13 @@ class ServoDB:
     HOMING_SPEED_SWITCH = Field(
         bytearray([0x99, 0x60, 0x01]),
         FOUR_BYTE,
-        calc_speed(300),
+        calc_speed(500),
     )
-    HOMING_CURRENT = Field(bytearray([0x99,0x60,0x00]),TWO_BYTE, 10)
+    HOMING_CURRENT = Field(bytearray([0x99,0x60,0x04]),TWO_BYTE, 300)
     HOMING_SPEED_ZERO = Field(
         bytearray([0x99, 0x60, 0x02]),
         FOUR_BYTE,
-        calc_speed(200),
+        calc_speed(500),
     )
     HOMING_ACC = Field(bytearray([0x9A, 0x60, 0x00]), FOUR_BYTE, calc_acc(100))
     HOMING_POWER_ON = Field(bytearray([0x99, 0x60, 0x03]), ONE_BYTE, 1)

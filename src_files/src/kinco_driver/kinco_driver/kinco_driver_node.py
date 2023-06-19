@@ -59,9 +59,12 @@ class KincoDriver(Node):
         with self._servo_lock:
             if self.servo_driver.is_moving_end:
                 if msg.data != self.servo_driver.position:
-                    self.get_logger().info(f'New target position: {msg.data}')
-                    self.servo_driver.target_position = int(msg.data)
-                    self.servo_driver.go_to_position()
+                    if int(msg.data) > 180 :
+                        self.get_logger().info(f'Target position to low: {msg.data}')
+                    else:
+                        self.get_logger().info(f'New target position: {msg.data}')
+                        self.servo_driver.target_position = int(msg.data)
+                        self.servo_driver.go_to_position()
                 else:
                     self.get_logger().info(
                         f'Target position: {msg.data} ,'
