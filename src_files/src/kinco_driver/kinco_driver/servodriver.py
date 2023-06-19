@@ -259,6 +259,19 @@ class ServoDriver:
         self._write(ServoDB.HOMING_ACC)
 
     # API functions
+    def clean_error(self):
+        self.din.simulate = 2, 1
+        ServoDB.DIN_SIMULATE.default_value = self.din.simulate
+        self._write(ServoDB.DIN_SIMULATE)
+        self.din.simulate = 1, 0
+        ServoDB.DIN_SIMULATE.default_value = self.din.simulate
+        self._write(ServoDB.DIN_SIMULATE)
+        self.din.simulate = 1, 1
+        self.din.simulate = 2, 0
+        ServoDB.DIN_SIMULATE.default_value = self.din.simulate
+        self._write(ServoDB.DIN_SIMULATE)
+
+
     def start_homing(self):
         # ServoDB.DIN_POLARITY.default_value = self.din.polarity
         self._during_homing.set()

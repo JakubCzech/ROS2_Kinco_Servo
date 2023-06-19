@@ -19,47 +19,49 @@ class ServoDB:
         TWO_BYTE,
         Controlword.Enable.value,
     )
-    INVERT_DIRECTION = Field(bytearray([0x7E, 0x60, 0x00]), ONE_BYTE, 0)
+    INVERT_DIRECTION = Field(bytearray([0x7E, 0x60, 0x00]), ONE_BYTE, 1)
 
     TARGET_POSITION = Field(bytearray([0x7A, 0x60, 0x00]), FOUR_BYTE, 0)
     TARGET_SPEED = Field(
         bytearray([0xFF, 0x60, 0x00]),
         FOUR_BYTE,
-        calc_speed(200),
+        calc_speed(500),
     )
     TARGET_TORQUE = Field(bytearray([0x71, 0x60, 0x00]), TWO_BYTE, 0)
 
     PROFILE_SPEED = Field(
         bytearray([0x81, 0x60, 0x00]),
         FOUR_BYTE,
-        calc_speed(200),
+        calc_speed(250),
     )
     MAX_SPEED = Field(
         bytearray([0x80, 0x60, 0x00]),
         TWO_BYTE,
-        calc_speed(200),
+        calc_speed(250),
     )
     PROFILE_ACC = Field(
         bytearray([0x83, 0x60, 0x00]),
         FOUR_BYTE,
-        calc_acc(100),
+        calc_acc(200),
     )
     PROFILE_DEC = Field(
         bytearray([0x84, 0x60, 0x00]),
         FOUR_BYTE,
         calc_acc(100),
     )
-
+# -17 platforma pozycjonuje się u góry przy INVERTDIRECTION=1
+# -18 platforma pozycjonuje się u dołu przy INVERTDIRECTION=1
     HOMING_METHOD = Field(bytearray([0x98, 0x60, 0x00]), ONE_BYTE, -17)
     HOMING_SPEED_SWITCH = Field(
         bytearray([0x99, 0x60, 0x01]),
         FOUR_BYTE,
-        calc_speed(100),
+        calc_speed(300),
     )
+    HOMING_CURRENT = Field(bytearray([0x99,0x60,0x00]),TWO_BYTE, 10)
     HOMING_SPEED_ZERO = Field(
         bytearray([0x99, 0x60, 0x02]),
         FOUR_BYTE,
-        calc_speed(50),
+        calc_speed(200),
     )
     HOMING_ACC = Field(bytearray([0x9A, 0x60, 0x00]), FOUR_BYTE, calc_acc(100))
     HOMING_POWER_ON = Field(bytearray([0x99, 0x60, 0x03]), ONE_BYTE, 1)
