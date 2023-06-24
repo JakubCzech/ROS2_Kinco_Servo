@@ -26,12 +26,15 @@ class ServoDriver:
         dev: str,
         baudrate: int,
     ) -> None:
-        self._get_connection(port=dev, baudrate=baudrate)
+        try:
+            self._get_connection(port=dev, baudrate=baudrate)
+        except Exception as e:
+            raise Exception(f'Connection error: {e}')
         self.telegram = RS232Telegram(id=1)
         self.logger = get_logger(self.__class__.__name__)
         self._last_write_time = time.time()
         self._last_write_cmd = None
-        self._min_write_interval = 0.075
+        self._min_write_interval = 0.1
         self._serial_lock = threading.Lock()
 
         self.init_servo_params()
@@ -51,8 +54,9 @@ class ServoDriver:
                 write_timeout=0.08,
                 exclusive=True,
             )
+            return 
         elif os.getenv('SERVO_PORT') is not None:
-            if os.getenv('SERVO_PORT') !=''
+            if os.getenv('SERVO_PORT') !='':
                 self.connect = Serial(
                     os.getenv('SERVO_PORT'),
                     baudrate,
@@ -60,6 +64,7 @@ class ServoDriver:
                     write_timeout=0.08,
                     exclusive=True,
                 )
+                return
         else:
             if glob.glob('/dev/ttyUSB*'):
                 for port in glob.glob('/dev/ttyUSB*'):
@@ -73,8 +78,11 @@ class ServoDriver:
                         )
                     except SerialException:
                         self.logger.error(f'Connection error on port {port}')
-            else:
-                raise ValueError('Port is not set')
+                    else:
+                        self.logger.info(f'Connected to {port}')
+                        return
+          
+        raise Exception('No servo connection found')
 
     def init_servo_params(self):
         for field in ServoDB.get():

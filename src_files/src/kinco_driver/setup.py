@@ -6,7 +6,7 @@ package_name = "kinco_driver"
 
 setup(
     name=package_name,
-    version="0.0.0",
+    version="1.0.0",
     packages=[package_name],
     data_files=[
         ("share/ament_index/resource_index/packages", ["resource/" + package_name]),
@@ -17,8 +17,8 @@ setup(
     zip_safe=True,
     maintainer="Jakub Czech",
     maintainer_email="czechjakub@icloud.com",
-    description="TODO: Package description",
-    license="TODO: License declaration",
+    description="ROS2 Humble package for controll Kinco DC Servo FD124S",
+    license="MIT",
     tests_require=["pytest"],
     entry_points={
         "console_scripts": ["kinco_driver_node = kinco_driver.kinco_driver_node:main"],

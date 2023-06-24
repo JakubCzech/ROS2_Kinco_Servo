@@ -23,6 +23,13 @@ class KincoDriver(Node):
         )
         port = self.get_parameter('port').value
         baudrate = self.get_parameter('baudrate').value
+        try:
+            self.servo_driver = ServoDriver(dev=port, baudrate=baudrate)
+        except  Exception as e:
+            self.get_logger().error(f'Error: {e} check port: {port}, and servo connection')
+            self.get_logger().error('Exiting...')
+            raise e
+        
         self._publish_frequency = 1.0 / self.get_parameter('frequency').value
         self._target_high = self.create_subscription(
             Int64,
@@ -45,7 +52,7 @@ class KincoDriver(Node):
         )
         self._servo_lock = threading.Lock()
         self.get_logger().debug(f'Timer frequency: {self._publish_frequency}')
-        self.servo_driver = ServoDriver(dev=port, baudrate=baudrate)
+       
         self.servo_driver.clean_error()
         self.servo_driver.enable()
         self.servo_driver.clean_error()
@@ -86,6 +93,9 @@ def main(args=None):
         kinco_driver = KincoDriver()
         rclpy.spin(kinco_driver)
     except KeyboardInterrupt:
+        kinco_driver.destroy_node()
+    except Exception as e:
+        kinco_driver.get_logger().error(f'Error: {e}')
         kinco_driver.destroy_node()
     finally:
         rclpy.shutdown()
